@@ -1,9 +1,9 @@
 // src/components/ProductList.js
 import React from 'react';
-import { products } from './data/products'; // Import the products data
-import './ProductList.css'; // Import the CSS file for styling
+import { products } from './data/products';
+import './ProductList.css';
 
-const ProductList = () => {
+const ProductList = ({ addToCart }) => {
   return (
     <div className="product-list-container">
       <h1>Welcome to Our Beauty Store</h1>
@@ -17,7 +17,12 @@ const ProductList = () => {
             <h2 className="product-name">{product.name}</h2>
             <p className="product-description">{product.description}</p>
             <p className="product-price">${product.price}</p>
-            <button className="add-to-cart-button">Add to Cart</button>
+            <button 
+              className="add-to-cart-button" 
+              onClick={() => addToCart(product)}
+            >
+              Add to Cart
+            </button>
           </div>
         ))}
       </div>
