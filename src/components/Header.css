@@ -1,60 +1,216 @@
-/* src/components/Header.css */
-header {
-  background-color: #333;
-  color: white;
-  padding: 10px 0;
-  text-align: center;
-  position: fixed; /* Makes header stay in place */
-  top: 0;          /* Positions at top of viewport */
-  left: 0;         /* Stretches full width */
-  right: 0;        /* Stretches full width */
-  width: 100%;     /* Ensures full width coverage */
-  z-index: 1000;   /* Keeps header above other content */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap');
+
+:root {
+  --dark-bg: #2a2a2a;
+  --darker-bg: #222;
+  --accent: #ff69b4;
+  --text-light: #ffffff;
+  --text-muted: #cccccc;
+  --transition: all 0.3s ease;
 }
 
-header nav {
+/* Base Layout */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--dark-bg);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.25);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header.scrolled {
+  background-color: rgba(42, 42, 42, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.company-banner {
+  padding: 1rem 2rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.site-header.scrolled .company-banner {
+  background-color: transparent;
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.company-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  transition: var(--transition);
+}
+
+.site-header.scrolled .company-title {
+  color: rgba(255, 105, 180, 0.9);
+}
+
+.main-nav {
+  padding: 0.75rem 2rem;
+}
+
+.nav-list {
   display: flex;
   justify-content: center;
-}
-
-header nav ul {
+  align-items: center;
   list-style: none;
-  padding: 0;
   margin: 0;
-  display: flex;
+  padding: 0;
+  gap: 1rem;
 }
 
-header nav ul li {
-  margin: 0 15px;
-}
-
-header nav ul li a {
-  color: white;
+/* Navigation Items */
+.nav-item a {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-light);
   text-decoration: none;
-  font-size: 16px;
-}
-
-header nav ul li a:hover {
-  text-decoration: underline;
-}
-
-/* Cart icon specific styles */
-.cart-icon {
-  margin-left: 20px; /* Adds some space before cart */
+  padding: 0.5rem 0.75rem;
+  transition: var(--transition);
   position: relative;
 }
 
-.cart-count {
+.nav-item a:hover {
+  color: var(--accent);
+}
+
+/* Dropdown Menus */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: #ff69b4;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background-color: var(--darker-bg);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: var(--transition);
+  z-index: 1001;
+}
+
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(255, 105, 180, 0.1);
+  color: var(--accent);
+}
+
+.dropdown-menu a:last-child {
+  border-bottom: none;
+}
+
+/* Cart Icon */
+.cart-icon {
+  margin-left: auto;
+}
+
+.cart-link {
+  display: flex;
+  align-items: center;
+}
+
+.cart-badge {
+  background-color: var(--accent);
   color: white;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
+/* Content Spacing */
+body {
+  padding-top: 140px;
+}
+
+/* Browser Support Fallback */
+@supports not (backdrop-filter: blur(10px)) {
+  .site-header.scrolled {
+    background-color: rgba(42, 42, 42, 0.95);
+  }
+  .site-header.scrolled .company-banner {
+    background-color: rgba(34, 34, 34, 0.9);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .company-title {
+    font-size: 1.8rem;
+  }
+  .nav-list {
+    gap: 0.75rem;
+  }
+  body {
+    padding-top: 130px;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-banner {
+    padding: 1rem;
+  }
+  .company-title {
+    font-size: 1.6rem;
+  }
+  .main-nav {
+    padding: 0.75rem 1rem;
+  }
+  body {
+    padding-top: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  .company-title {
+    font-size: 1.4rem;
+  }
+  .nav-item a {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+  .nav-list {
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .cart-icon {
+    margin-left: 0;
+  }
 }
