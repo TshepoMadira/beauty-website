@@ -1,14 +1,17 @@
 // src/components/Cart.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './Cart.css';
 import CheckoutForm from './CheckoutForm';
 
 const Cart = ({ cartItems, removeFromCart }) => {
   const [showCheckout, setShowCheckout] = useState(false);
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const navigate = useNavigate(); // Use the useNavigate hook
 
   const handleProceedToCheckout = () => {
-    setShowCheckout(true);
+    // Redirect to the /auth route
+    navigate('/auth');
   };
 
   return (
@@ -17,11 +20,11 @@ const Cart = ({ cartItems, removeFromCart }) => {
       {cartItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
-        <>
+        <div>
           {showCheckout ? (
             <CheckoutForm />
           ) : (
-            <>
+            <div>
               <div className="cart-items">
                 {cartItems.map(item => (
                   <div key={item.id} className="cart-item">
@@ -44,9 +47,9 @@ const Cart = ({ cartItems, removeFromCart }) => {
                   Proceed to Checkout
                 </button>
               </div>
-            </>
+            </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
