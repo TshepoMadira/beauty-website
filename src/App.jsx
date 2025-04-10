@@ -16,6 +16,9 @@ import Peruvian from '../pages/Peruvian';
 import Indian from '../pages/Indian';
 import Frontals from '../pages/Frontals';
 import Auth from './components/Auth';
+import ProductDetails from './components/ProductDetails';
+import AllProducts from './components/AllProducts';
+
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -59,7 +62,9 @@ const App = () => {
         <Route path="/hair-products" element={<HairProducts addToCart={addToCart} />} />
         <Route path="/services" element={<Services addToCart={addToCart} />} />
         <Route path="/contact" element={<Contact />} />
-        
+        <Route path="/products/:productId" element={<ProductDetails addToCart={addToCart} />} />
+        <Route path="/products" element={<AllProducts />} />
+
         {/* Protected Routes */}
         <Route 
           path="/checkout" 

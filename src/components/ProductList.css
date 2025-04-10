@@ -1,67 +1,269 @@
-/* src/components/ProductList.css */
 .product-list-container {
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+}
+
+.header-container {
   text-align: center;
+  margin-bottom: 40px;
+}
+
+.header-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.intro-text {
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+  color: #555;
+}
+
+.our-categories {
+  margin: 60px 0;
+  text-align: center;
+}
+
+.our-categories h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #333;
+  position: relative;
+  display: inline-block;
+}
+
+.our-categories h2::after {
+  content: '';
+  position: absolute;
+  width: 40%;
+  height: 3px;
+  background-color: #000;
+  bottom: -10px;
+  left: 30%;
+}
+
+.category-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.category-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.category-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.category-box h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.category-box p {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.category-box button {
+  background-color: transparent;
+  color: #000;
+  border: 2px solid #000;
+  padding: 10px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  width: 115px;
+}
+
+.category-box button:hover {
+  background-color: #000;
+  color: white;
+}
+
+.products-section {
+  margin: 60px 0;
+  text-align: center;
+}
+
+.section-header {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #333;
+  position: relative;
+  display: inline-block;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  width: 40%;
+  height: 3px;
+  background-color: #000;
+  bottom: -10px;
+  left: 30%;
 }
 
 .product-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
+  margin-top: 50px;
+  margin-bottom: 40px;
+  row-gap: 50px;
+  column-gap: 40px; /* Horizontal gap between columns */
+
 }
 
 .product-card {
-  background-color: white;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
+  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 250px; /* Fixed width instead of percentage */
-  padding: 15px;
-  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.product-image {
-  max-width: 100%;
-  height: 200px; /* Fixed height for images */
-  object-fit: cover; /* Ensures images maintain aspect ratio */
-  border-radius: 8px;
-  margin-bottom: 10px;
+.product-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.product-name {
-  font-size: 1.1em;
-  margin: 8px 0;
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
-.product-description {
-  font-size: 0.8em;
-  color: #666;
-  margin: 8px 0;
-  height: 60px; /* Fixed height for description */
-  overflow: hidden; /* Hides text that overflows */
-  text-overflow: ellipsis; /* Adds ... for overflow text */
+.product-card h2 {
+  font-size: 1.3rem;
+  margin: 10px 0;
 }
 
 .product-price {
-  font-size: 1em;
-  color: #333;
-  margin: 8px 0;
+  font-weight: bold;
+  margin: 15px 0;
+  font-size: 1.2rem;
+  color: #222;
+}
+/* Replace the existing .product-buttons styles with these: */
+.product-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.view-details-button {
+  background-color: transparent;
+  color: #000;
+  border: 2px solid #000;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.view-details-button:hover {
+  background-color: #000;
+  color: white;
 }
 
 .add-to-cart-button {
-  background-color: #333;
+  background-color: #000;
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 8px 15px;
-  font-size: 0.9em;
+  padding: 8px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  font-size: 0.8rem;
+  flex: 1;
+  white-space: nowrap;
 }
 
 .add-to-cart-button:hover {
-  background-color: #555;
+  background-color: #333;
+}
+
+.view-all-container {
+  margin-top: 80px;
+}
+
+.view-all-button {
+  background-color: transparent;
+  color: #000;
+  border: 2px solid #000;
+  padding: 12px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  width: 200px;
+}
+
+.view-all-button:hover {
+  background-color: #000;
+  color: white;
+}
+
+/* All Products */
+/* Category filter styles */
+
+.category-filter {
+  margin: 30px 0;
+  text-align: center;
+  
+}
+
+.category-select {
+  padding: 10px 20px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 250px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+}
+
+.category-select:focus {
+  outline: none;
+  border-color: #333;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+/* No products message */
+.no-products {
+  text-align: center;
+  grid-column: 1 / -1;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 50px;
 }
