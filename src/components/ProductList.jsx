@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { products } from './data/products';
 import './ProductList.css';
+import Testimonials from './Testimonials';
 
 const ProductList = ({ addToCart }) => {
   const navigate = useNavigate();
@@ -95,6 +96,7 @@ const ProductList = ({ addToCart }) => {
           </div>
         )}
       </div>
+      <Testimonials />
     </div>
   );
 };

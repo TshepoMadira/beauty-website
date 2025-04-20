@@ -130,33 +130,41 @@
 .dropdown-menu a:last-child {
   border-bottom: none;
 }
-
-/* Cart Icon */
-.cart-icon {
-  margin-left: auto;
-  position: relative; /* Add position relative to the cart icon */
+/* Cart Icon Styling */
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Space between icons */
 }
 
-.cart-link {
+.icon-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-light);
+}
+
+.cart-icon-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
 }
 
-/* Adjust Cart Badge */
 .cart-badge {
   background-color: var(--accent);
   color: white;
   border-radius: 50%;
-  width: 18px; /* Reduced size */
-  height: 18px; /* Reduced size */
+  width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem; /* Adjust font size */
-  position: absolute; /* Position it above the cart icon */
-  top: -5px; /* Adjust to move it above the icon */
-  right: -5px; /* Adjust to position it correctly relative to the icon */
+  font-size: 0.65rem;
   font-weight: bold;
+  position: absolute;
+  top: -6px; /* Adjust vertical position */
+  right: -6px; /* Adjust horizontal position */
+  transform: translate(50%, -50%); /* Fine-tune positioning */
 }
 
 
@@ -222,3 +230,167 @@ body {
     margin-left: 0;
   }
 }
+
+
+
+/* Base Layout */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--dark-bg);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.25);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.company-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.company-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  transition: var(--transition);
+}
+
+.mobile-menu-btn {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.main-nav {
+  padding: 0.75rem 2rem;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1rem;
+}
+
+.nav-item a {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  transition: var(--transition);
+  position: relative;
+}
+
+.nav-item a:hover {
+  color: var(--accent);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background-color: var(--darker-bg);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: var(--transition);
+  z-index: 1001;
+}
+
+.dropdown-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(255, 105, 180, 0.1);
+  color: var(--accent);
+}
+
+.dropdown-menu a:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .main-nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--dark-bg);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    z-index: 1001;
+  }
+
+  .main-nav.open {
+    display: flex;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    background-color: transparent;
+    padding-left: 1rem;
+  }
+
+  .dropdown-menu a {
+    padding: 0.5rem 0;
+    border-bottom: none;
+  }
+
+  .icon-group {
+    margin-top: 1rem;
+  }
+}
+

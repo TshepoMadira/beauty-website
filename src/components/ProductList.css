@@ -2,6 +2,7 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: #000; /* Added black background for contrast */
 }
 
 .header-container {
@@ -12,13 +13,14 @@
 .header-container h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
+  color: white; /* Added white color for heading */
 }
 
 .intro-text {
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
-  color: #555;
+  color: white; /* Changed to white */
 }
 
 .our-categories {
@@ -29,7 +31,7 @@
 .our-categories h2 {
   font-size: 2rem;
   margin-bottom: 40px;
-  color: #333;
+  color: white; /* Changed to white */
   position: relative;
   display: inline-block;
 }
@@ -39,7 +41,7 @@
   position: absolute;
   width: 40%;
   height: 3px;
-  background-color: #000;
+  background-color: #ff69b4; /* Changed to pink */
   bottom: -10px;
   left: 30%;
 }
@@ -104,7 +106,7 @@
 .section-header {
   font-size: 2rem;
   margin-bottom: 40px;
-  color: #333;
+  color: white; /* Changed to white */
   position: relative;
   display: inline-block;
 }
@@ -114,7 +116,7 @@
   position: absolute;
   width: 40%;
   height: 3px;
-  background-color: #000;
+  background-color: #ff69b4; /* Changed to pink */
   bottom: -10px;
   left: 30%;
 }
@@ -126,8 +128,7 @@
   margin-top: 50px;
   margin-bottom: 40px;
   row-gap: 50px;
-  column-gap: 40px; /* Horizontal gap between columns */
-
+  column-gap: 40px;
 }
 
 .product-card {
@@ -138,6 +139,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: white; /* Ensured white background */
 }
 
 .product-card:hover {
@@ -155,15 +157,16 @@
 .product-card h2 {
   font-size: 1.3rem;
   margin: 10px 0;
+  color: #222; /* Ensured text is visible on white */
 }
 
 .product-price {
   font-weight: bold;
   margin: 15px 0;
   font-size: 1.2rem;
-  color: #222;
+  color: #222; /* Ensured text is visible on white */
 }
-/* Replace the existing .product-buttons styles with these: */
+
 .product-buttons {
   display: flex;
   gap: 10px;
@@ -213,8 +216,8 @@
 
 .view-all-button {
   background-color: transparent;
-  color: #000;
-  border: 2px solid #000;
+  color: white; /* Changed to white */
+  border: 2px solid white; /* Changed to white */
   padding: 12px 30px;
   border-radius: 5px;
   cursor: pointer;
@@ -225,8 +228,8 @@
 }
 
 .view-all-button:hover {
-  background-color: #000;
-  color: white;
+  background-color: white; /* Changed to white */
+  color: black; /* Changed to black for contrast */
 }
 
 /* All Products */
@@ -235,7 +238,6 @@
 .category-filter {
   margin: 30px 0;
   text-align: center;
-  
 }
 
 .category-select {
@@ -266,4 +268,29 @@
   font-size: 1.2rem;
   color: #666;
   margin-top: 50px;
+}
+
+
+
+/* Add to ProductList.css */
+.testimonials-section {
+  margin: 100px 0;
+}
+
+.section-header {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: white;
+  position: relative;
+  display: inline-block;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  width: 40%;
+  height: 3px;
+  background-color: #ff69b4;
+  bottom: -10px;
+  left: 30%;
 }

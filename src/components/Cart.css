@@ -5,6 +5,12 @@
     margin: 0 auto;
     margin-top: 30px;
   }
+  .cart-container h2 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* optional: adds subtle shadow for better readability */
+  }
   
   .cart-items {
     display: grid;
