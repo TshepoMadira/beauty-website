@@ -18,7 +18,7 @@ import Frontals from '../pages/Frontals';
 import Auth from './components/Auth';
 import ProductDetails from './components/ProductDetails';
 import AllProducts from './components/AllProducts';
-import Testimonials from './components/Testimonials';
+import BookingOptions from './components/BookingOptions';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -70,6 +70,8 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/products/:productId" element={<ProductDetails addToCart={addToCart} />} />
           <Route path="/products" element={<AllProducts />} />
+          // In your App.js, add this route to the Routes component
+<Route path="/booking" element={<BookingOptions />} />
 
           {/* Protected Routes */}
           <Route 
