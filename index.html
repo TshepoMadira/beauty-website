@@ -4,10 +4,131 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>BNGBeautyCo | Loading...</title>
+    <style>
+      /* Beauty Loading Animation Styles */
+      .beauty-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #faf5f9;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        font-family: 'Playfair Display', serif;
+      }
+      
+      .loader-logo {
+        font-size: 2.5rem;
+        color: #ff69b4;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      }
+      
+      .beauty-spinner {
+        width: 80px;
+        height: 80px;
+        position: relative;
+      }
+      
+      .cosmetic-item {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: #ff69b4;
+        border-radius: 50%;
+        animation: beautyPulse 2s infinite ease-in-out;
+      }
+      
+      .lipstick { top: 0; left: 30px; animation-delay: 0s; }
+      .perfume { top: 30px; right: 0; animation-delay: 0.4s; }
+      .brush { bottom: 0; left: 30px; animation-delay: 0.8s; }
+      .mirror { top: 30px; left: 0; animation-delay: 1.2s; }
+      
+      @keyframes beautyPulse {
+        0%, 100% { 
+          transform: scale(0.8); 
+          opacity: 0.7;
+          box-shadow: 0 0 0 rgba(255,105,180,0.4);
+        }
+        50% { 
+          transform: scale(1.3); 
+          opacity: 1;
+          box-shadow: 0 0 20px rgba(255,105,180,0.8);
+        }
+      }
+      
+      .loading-text {
+        margin-top: 2rem;
+        color: #888;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      
+      .loading-text:after {
+        content: '...';
+        animation: dots 1.5s steps(5, end) infinite;
+      }
+      
+      @keyframes dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60%, 100% { content: '...'; }
+      }
+
+      /* Prevent scrolling during load */
+      body.loading {
+        overflow: hidden;
+      }
+    </style>
   </head>
-  <body>
+  <body class="loading">
+    <!-- Beauty Loading Screen -->
+    <div class="beauty-loader">
+      <div class="loader-logo">BNGBeautyCo</div>
+      <div class="beauty-spinner">
+        <div class="cosmetic-item lipstick"></div>
+        <div class="cosmetic-item perfume"></div>
+        <div class="cosmetic-item brush"></div>
+        <div class="cosmetic-item mirror"></div>
+      </div>
+      <div class="loading-text">Preparing your beauty experience</div>
+    </div>
+
+    <!-- Your React App Mount Point -->
     <div id="root"></div>
+    
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Loading Animation Control Script -->
+    <script>
+      // Hide loader when React app is fully loaded
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loader = document.querySelector('.beauty-loader');
+          if (loader) {
+            loader.style.opacity = '0';
+            document.body.classList.remove('loading');
+            setTimeout(() => loader.remove(), 500);
+          }
+        }, 1500); // Minimum show time (1.5s)
+      });
+
+      // Fallback in case load event doesn't fire
+      setTimeout(function() {
+        const loader = document.querySelector('.beauty-loader');
+        if (loader) {
+          loader.remove();
+          document.body.classList.remove('loading');
+        }
+      }, 4000); // Maximum show time (4s)
+    </script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 import React from 'react';
-// import './HairProducts.css'; // Add styling if needed
+import './HairProducts.css'; 
 
 const HairProducts = ({ addToCart }) => {
   const hairProducts = [

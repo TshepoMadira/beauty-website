@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaChevronDown, FaBars } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaChevronDown, FaBars, FaTimes } from 'react-icons/fa';
 import './Header.css';
 
 const Header = ({ cartCount }) => {
@@ -28,83 +28,91 @@ const Header = ({ cartCount }) => {
 
   const closeAllDropdowns = () => {
     setOpenDropdown(null);
+    setMobileMenuOpen(false);
+  };
+
+  const handleMobileLinkClick = () => {
+    closeAllDropdowns();
+    setTimeout(() => {
+      setMobileMenuOpen(false);
+    }, 100);
   };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+    if (mobileMenuOpen) {
+      setOpenDropdown(null);
+    }
   };
 
   return (
     <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="company-banner">
-        <h1 className="company-title">BNG Beauty Co.</h1>
-        {/* Mobile menu button */}
+        <Link to="/" className="company-title-link">
+          <h1 className="company-title">BNG Beauty Co.</h1>
+        </Link>
         <button
           className={`mobile-menu-btn ${mobileMenuOpen ? 'open' : ''}`}
           onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
         >
-          <FaBars className="icon" />
+          {mobileMenuOpen ? <FaTimes className="icon" /> : <FaBars className="icon" />}
         </button>
       </div>
 
       <nav className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <ul className="nav-list">
           <li className="nav-item">
-            <Link to="/" onClick={closeAllDropdowns}>Home</Link>
+            <Link to="/" onClick={handleMobileLinkClick}>Home</Link>
           </li>
-          
+
           <li className="nav-item dropdown">
-            <div 
+            <div
               className="dropdown-toggle"
               onClick={() => toggleDropdown('weaves')}
             >
-              <Link to="/weaves" className="nav-link">Weaves</Link>
-              <FaChevronDown className={`dropdown-icon ${openDropdown === 'weaves' ? 'open' : ''}`} />
+              <span className="nav-link">Weaves</span>
+              <FaChevronDown className="dropdown-icon" />
             </div>
-            {openDropdown === 'weaves' && (
-              <div className="dropdown-menu">
-                <Link to="/weaves/brazilian" onClick={closeAllDropdowns}>Brazilian</Link>
-                <Link to="/weaves/peruvian" onClick={closeAllDropdowns}>Peruvian</Link>
-                <Link to="/weaves/indian" onClick={closeAllDropdowns}>Indian</Link>
-                <Link to="/weaves/frontals" onClick={closeAllDropdowns}>Frontals</Link>
-              </div>
-            )}
+            <div className={`dropdown-menu ${openDropdown === 'weaves' ? 'open' : ''}`}>
+              <Link to="/weaves/brazilian" onClick={handleMobileLinkClick}>Brazilian</Link>
+              <Link to="/weaves/peruvian" onClick={handleMobileLinkClick}>Peruvian</Link>
+              <Link to="/weaves/indian" onClick={handleMobileLinkClick}>Indian</Link>
+              <Link to="/weaves/frontals" onClick={handleMobileLinkClick}>Frontals</Link>
+            </div>
           </li>
-          
+
           <li className="nav-item dropdown">
-            <div 
+            <div
               className="dropdown-toggle"
               onClick={() => toggleDropdown('nails')}
             >
-              <Link to="/nails" className="nav-link">Nails</Link>
-              <FaChevronDown className={`dropdown-icon ${openDropdown === 'nails' ? 'open' : ''}`} />
+              <span className="nav-link">Nails</span>
+              <FaChevronDown className="dropdown-icon" />
             </div>
-            {openDropdown === 'nails' && (
-              <div className="dropdown-menu">
-                <Link to="/nails/gel-overlay" onClick={closeAllDropdowns}>Gel Overlay</Link>
-                <Link to="/nails/acrylic" onClick={closeAllDropdowns}>Acrylic</Link>
-                <Link to="/nails/buff-shine" onClick={closeAllDropdowns}>Buff & Shine</Link>
-                <Link to="/nails/polygel" onClick={closeAllDropdowns}>Polygel</Link>
-              </div>
-            )}
+            <div className={`dropdown-menu ${openDropdown === 'nails' ? 'open' : ''}`}>
+              <Link to="/nails/gel-overlay" onClick={handleMobileLinkClick}>Gel Overlay</Link>
+              <Link to="/nails/acrylic" onClick={handleMobileLinkClick}>Acrylic</Link>
+              <Link to="/nails/buff-shine" onClick={handleMobileLinkClick}>Buff & Shine</Link>
+              <Link to="/nails/polygel" onClick={handleMobileLinkClick}>Polygel</Link>
+            </div>
           </li>
-          
+
           <li className="nav-item">
-            <Link to="/hair-products" onClick={closeAllDropdowns}>Hair Products</Link>
+            <Link to="/hair-products" onClick={handleMobileLinkClick}>Hair Products</Link>
           </li>
           <li className="nav-item">
-            <Link to="/services" onClick={closeAllDropdowns}>Services</Link>
+            <Link to="/services" onClick={handleMobileLinkClick}>Services</Link>
           </li>
           <li className="nav-item">
-            <Link to="/contact" onClick={closeAllDropdowns}>Contact</Link>
+            <Link to="/contact" onClick={handleMobileLinkClick}>Contact</Link>
           </li>
-          
-          {/* User and Cart Icons */}
+
           <li className="nav-item icon-group">
-            <Link to="/auth" className="icon-link" title="Account">
+            <Link to="/auth" className="icon-link" title="Account" onClick={handleMobileLinkClick}>
               <FaUser className="icon" />
             </Link>
-            <Link to="/cart" className="icon-link" title="Cart">
+            <Link to="/cart" className="icon-link" title="Cart" onClick={handleMobileLinkClick}>
               <span className="cart-icon-wrapper">
                 <FaShoppingCart className="icon" />
                 {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
