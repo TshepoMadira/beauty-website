@@ -63,10 +63,10 @@ const ProductList = ({ addToCart }) => {
         <h2 className="section-header">Featured Products</h2>
         <div className="product-list">
           {featuredProducts.map(product => (
-            <div key={product.id} className="product-card">
+            <div key={product.id} className="product-cards">
               <img src={product.image} alt={product.name} />
               <h2>{product.name}</h2>
-              <p className="product-price">${product.price}</p>
+              <p className="product-prices">${product.price}</p>
               <div className="product-buttons">
                 <button
                   className="view-details-button"
@@ -75,7 +75,7 @@ const ProductList = ({ addToCart }) => {
                   View Details
                 </button>
                 <button
-                  className="add-to-cart-button"
+                  className="add-to-cart-buttons"
                   onClick={() => addToCart(product)}
                 >
                   Add to Cart

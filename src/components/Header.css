@@ -1,13 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap');
 
 :root {
-  --dark-bg: #2a2a2a;
-  --darker-bg: #222;
-  --accent: #ff69b4;
-  --text-light: #ffffff;
-  --text-muted: #cccccc;
+  --dark-bg: rgba(235, 233, 233, 0.884);
+  --darker-bg: #f0f0f0;
+  --accent: #BBB791;
+  --text-light: #000000;
+  --text-muted: #333333;
   --transition: all 0.3s ease;
 }
+body {
+  background-color: #ffffff; /* White background */
+  padding-top: 140px;
+}
+
 
 /* Base Layout */
 .site-header {
@@ -18,17 +23,17 @@
   width: 100%;
   z-index: 1000;
   background-color: var(--dark-bg);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   transition: var(--transition);
   display: flex;
   flex-direction: column;
 }
 
 .site-header.scrolled {
-  background-color: rgba(42, 42, 42, 0.85);
-  backdrop-filter: blur(10px);
+  background-color: rgba(235, 233, 233, 0.7); /* Semi-transparent light gray */
+  backdrop-filter: blur(10px); /* Blur effect */
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
 .company-banner {
@@ -36,13 +41,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
+  background-color: transparent;
 }
 
 .site-header.scrolled .company-banner {
   background-color: transparent;
-  border-bottom-color: rgba(194, 37, 37, 0.05);
+  border-bottom-color: rgba(0, 0, 0, 0.05);
 }
 
 .company-title {
@@ -52,7 +58,7 @@
   color: var(--accent);
   margin: 0;
   letter-spacing: 1.5px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
   transition: var(--transition);
 }
 
@@ -62,10 +68,6 @@
   transition: var(--transition);
   display: inline-block;
   max-width: calc(100% - 50px);
-}
-
-.site-header.scrolled {
-  color: rgba(255, 105, 180, 0.9);
 }
 
 /* Navigation */
@@ -110,7 +112,7 @@
   min-width: 200px;
   background-color: var(--darker-bg);
   border-radius: 0 0 4px 4px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
@@ -129,7 +131,7 @@
   display: block;
   padding: 0.75rem 1.25rem;
   color: var(--text-light);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 0.95rem;
 }
 
@@ -212,10 +214,7 @@ body {
 /* Browser Support Fallback */
 @supports not (backdrop-filter: blur(10px)) {
   .site-header.scrolled {
-    background-color: rgba(42, 42, 42, 0.95);
-  }
-  .site-header.scrolled .company-banner {
-    background-color: rgba(34, 34, 34, 0.9);
+    background-color: rgba(235, 233, 233, 0.9);
   }
 }
 

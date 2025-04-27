@@ -50,6 +50,7 @@ const Header = ({ cartCount }) => {
       <div className="company-banner">
         <Link to="/" className="company-title-link">
           <h1 className="company-title">BNG Beauty Co.</h1>
+          
         </Link>
         <button
           className={`mobile-menu-btn ${mobileMenuOpen ? 'open' : ''}`}

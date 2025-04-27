@@ -1,48 +1,71 @@
 .testimonials-section {
-    margin: 80px 0;
-    text-align: center;
-    color: white;
-  }
-  
-  .testimonials-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-  }
-  
-  .testimonial-card {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 30px;
-    text-align: left;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-  }
-  
-  .testimonial-card:hover {
-    transform: translateY(-5px);
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-  
-  .testimonial-rating {
-    color: #ff69b4;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-  }
-  
-  .testimonial-comment {
-    font-style: italic;
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-  
-  .testimonial-author h4 {
-    margin-bottom: 5px;
-    font-size: 1.1rem;
-  }
-  
-  .testimonial-author p {
-    color: #ccc;
-    font-size: 0.9rem;
-  }
+  margin: 80px 0;
+  text-align: center;
+  color: white;
+}
+
+.testimonials-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.testimonial-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: left;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.testimonial-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid #cec894;
+}
+
+.testimonial-author {
+  text-align: left;
+}
+
+.testimonial-author h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.testimonial-author p {
+  color:black;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.testimonial-rating {
+  color: #c2b751;
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.testimonial-comment {
+  font-style: italic;
+  line-height: 1.6;
+  margin-top: auto;
+}
