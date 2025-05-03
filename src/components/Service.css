@@ -12,6 +12,7 @@
   font-size: 2rem;
   color: #333;
   margin-bottom: 30px;
+  font-family: 'DM Serif Display', serif;
 }
 
 .services-list {
@@ -40,6 +41,7 @@
   font-size: 1.4rem;
   color: #333;
   margin-bottom: 10px;
+  font-family: 'DM Serif Display', serif;
 }
 
 .service-description {
@@ -52,19 +54,19 @@
 
 .service-price {
   font-size: 1.1rem;
-  color: #4CAF50;
+  color: #c2b751;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
 .service-duration {
   font-size: 0.9rem;
-  color: #888;
+  color: #c2b751;
   margin-bottom: 15px;
 }
 
 .book-button {
-  background-color: #4CAF50;
+  background-color: #BBB791;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -76,7 +78,7 @@
 }
 
 .book-button:hover {
-  background-color: #45a049;
+  background-color: #9a986b;
 }
 
 .book-button:disabled {

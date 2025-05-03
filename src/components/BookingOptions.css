@@ -15,6 +15,7 @@
   font-size: 2.2rem;
   font-weight: 600;
   letter-spacing: -0.5px;
+  font-family: 'DM Serif Display', serif;
 }
 
 .service-summary {
@@ -44,6 +45,7 @@
   margin-bottom: 8px;
   font-size: 1.6rem;
   font-weight: 600;
+  font-family: 'DM Serif Display', serif;
 }
 
 .form-description {
@@ -108,7 +110,7 @@
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  border-color: #4CAF50;
+  border-color: #BBB791;
   outline: none;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
   background-color: #fff;
@@ -144,7 +146,7 @@
 .checkbox-group input {
   width: 18px;
   height: 18px;
-  accent-color: #4CAF50;
+  accent-color: #BBB791;
 }
 
 .checkbox-group label {
@@ -155,7 +157,7 @@
 }
 
 .submit-btn {
-  background-color: #4CAF50;
+  background-color: #BBB791;
   color: white;
   border: none;
   padding: 14px 28px;
@@ -166,12 +168,16 @@
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 10px;
-  width: 100%;
+  width: auto; /* Changed from 100% to auto */
+  max-width: 300px; /* Added max-width */
   letter-spacing: 0.5px;
+  display: block; /* Ensures it stays as a block element */
+  margin-left: auto; /* Centers the button */
+  margin-right: auto;
 }
 
 .submit-btn:hover {
-  background-color: #3e8e41;
+  background-color: #9a986b;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

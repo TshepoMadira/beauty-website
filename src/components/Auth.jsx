@@ -27,6 +27,23 @@ export default function Auth() {
     }));
   };
 
+  // Check if form is valid based on current mode (login/register)
+  const isFormValid = () => {
+    if (isLogin) {
+      // For login, just check email and password
+      return formData.email.trim() && formData.password.trim();
+    } else {
+      // For register, check all required fields
+      return (
+        formData.email.trim() && 
+        formData.password.trim() && 
+        formData.firstName.trim() && 
+        formData.lastName.trim() && 
+        formData.phone.trim()
+      );
+    }
+  };
+
   // Basic password validation
   const validatePassword = (password) => {
     return password.length >= 6;
@@ -128,7 +145,18 @@ export default function Auth() {
             phone: formData.phone
           }
         );
-        navigate(from, { replace: true });
+        // After successful registration, switch to login view
+        setIsLogin(true);
+        // Clear password field but keep email
+        setFormData(prev => ({
+          ...prev,
+          password: '',
+          firstName: '',
+          lastName: '',
+          phone: ''
+        }));
+        // Show success message
+        setError('Registration successful! Please login.');
       }
     } catch (err) {
       setError(err.message);
@@ -152,6 +180,7 @@ export default function Auth() {
               onChange={handleChange}
               required
               className="auth-input"
+              style={{ color: '#333' }}
             />
             <input
               type="text"
@@ -161,6 +190,7 @@ export default function Auth() {
               onChange={handleChange}
               required
               className="auth-input"
+              style={{ color: '#333' }}
             />
             <input
               type="tel"
@@ -170,6 +200,7 @@ export default function Auth() {
               onChange={handleChange}
               required
               className="auth-input"
+              style={{ color: '#333' }}
             />
           </>
         )}
@@ -181,6 +212,7 @@ export default function Auth() {
           onChange={handleChange}
           required
           className="auth-input"
+          style={{ color: '#333' }}
         />
         <input
           type="password"
@@ -191,22 +223,29 @@ export default function Auth() {
           required
           minLength={6}
           className="auth-input"
+          style={{ color: '#333' }}
         />
         <button 
           type="submit" 
           className="auth-submit-btn"
-          disabled={isLoading}
+          disabled={isLoading || !isFormValid()}
         >
           {isLoading ? 'Processing...' : isLogin ? 'Login' : 'Register'}
         </button>
       </form>
       <div className="auth-toggle-container">
         {isLogin ? (
-          <span onClick={() => setIsLogin(false)} className="auth-toggle-link">
+          <span onClick={() => {
+            setIsLogin(false);
+            setError('');
+          }} className="auth-toggle-link">
             Need an account? Register
           </span>
         ) : (
-          <span onClick={() => setIsLogin(true)} className="auth-toggle-link">
+          <span onClick={() => {
+            setIsLogin(true);
+            setError('');
+          }} className="auth-toggle-link">
             Already have an account? Login
           </span>
         )}

@@ -3,8 +3,9 @@ import './HairProducts.css';
 
 const HairProducts = ({ addToCart }) => {
   const hairProducts = [
-    { id: 1, name: 'Shampoo', description: 'Refreshing formula', price: 10, image: '/images/shampoo.jpg' },
-    { id: 2, name: 'Conditioner', description: 'Moisturizing formula', price: 12, image: '/images/conditioner.jpg' },
+    { id: 1, name: 'Comb Machine', description: 'Refreshing formula', price: 10, image: '../src\/assets\/images/comb.jpg' },
+    { id: 2, name: 'Olive oil', description: 'Moisturizing formula', price: 12, image: '../src/assets/images/oliveoil.jpg' },
+    { id: 3, name: 'Mixture of Products', description: 'Moisturizing formula', price: 12, image: '../src/assets/images/mixtureofproducts.jpg' },
     // Add more hair products here
   ];
 
