@@ -66,7 +66,7 @@ const ProductList = ({ addToCart }) => {
             <div key={product.id} className="product-cards">
               <img src={product.image} alt={product.name} />
               <h2>{product.name}</h2>
-              <p className="product-prices">${product.price}</p>
+              <p className="product-prices">R{product.price}</p>
               <div className="product-buttons">
                 <button
                   className="view-details-button"

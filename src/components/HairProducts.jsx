@@ -18,7 +18,7 @@ const HairProducts = ({ addToCart }) => {
             <img src={product.image} alt={product.name} className="product-image" />
             <h3>{product.name}</h3>
             <p>{product.description}</p>
-            <p>${product.price}</p>
+            <p>R{product.price}</p>
             <button 
               className="add-to-cart-btn"
               onClick={() => addToCart(product)}
