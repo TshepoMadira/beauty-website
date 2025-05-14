@@ -1,0 +1,202 @@
+/* ProductList.css - Complete Styling */
+
+/* Base Styles */
+.product-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  }
+  
+  .section-header {
+    text-align: center;
+    /* color: #2d3748; */
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+  
+  /* Category Filter */
+  .category-filter {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .category-select {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .category-select:focus {
+    border-color: #BBB791;
+    /* box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1); */
+  }
+  
+  /* Product Grid */
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+  
+  /* Product Card */
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #edf2f7;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #e2e8f0;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-bottom: 1px solid #edf2f7;
+  }
+  
+  .product-name {
+    font-size: 1.1rem;
+    margin: 1rem 1.25rem 0.5rem;
+    color: #2d3748;
+    font-weight: 600;
+  }
+  
+  .product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2c5282;
+    margin: 0 1.25rem 1.25rem;
+  }
+  
+  /* Product Buttons */
+  .product-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.25rem 1.25rem;
+    gap: 0.75rem;
+    margin-top: auto;
+  }
+  
+  .view-details-button,
+  .add-to-cart-button {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .view-details-button {
+    background-color: transparent;
+    color: #c2b751;
+    border: 1px solid #BBB791;
+  }
+  
+  .view-details-button:hover {
+    background-color: #c2b751;
+    color: #fff;
+    border-color: #cbd5e0;
+    outline: none;
+  }
+  
+  .add-to-cart-button {
+    background-color: #BBB791;
+    color: white;
+  }
+  
+  .add-to-cart-button:hover {
+    background-color: #9a986b;
+    outline: none;
+  }
+  
+  /* No Products Message */
+  .no-products {
+    text-align: center;
+    grid-column: 1 / -1;
+    color: #718096;
+    font-size: 1.1rem;
+    padding: 3rem 0;
+  }
+  
+
+  .category-select option {
+    color: #333; /* Ensure options are visible */
+    background-color: white;
+    padding: 10px;
+  }
+  
+  .category-select:focus {
+    outline: none;
+    border-color: #c2b751; /* Matching your purple theme */
+    box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.2);
+  }
+  /* No products message */
+  .no-products {
+    text-align: center;
+    grid-column: 1 / -1;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 50px;
+  }
+  
+  /* Remove tap highlight on mobile */
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .product-list {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .product-image {
+      height: 200px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .product-list {
+      grid-template-columns: 1fr;
+    }
+    
+    .product-buttons {
+      flex-direction: column;
+    }
+    
+    .section-header {
+      font-size: 1.8rem;
+    }
+  }

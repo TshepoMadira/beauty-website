@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { products } from './data/products';
-import './ProductList.css';
+import './Allproducts.css';
 
 const AllProducts = ({ addToCart }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -43,8 +43,8 @@ const AllProducts = ({ addToCart }) => {
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => (
             <div key={product.id} className="product-card">
-              <img src={product.image} alt={product.name} />
-              <h2>{product.name}</h2>
+              <img src={product.image} alt={product.name} className="product-image" />
+              <h2 className="product-name">{product.name}</h2>
               <p className="product-price">${product.price}</p>
               <div className="product-buttons">
                 <button
