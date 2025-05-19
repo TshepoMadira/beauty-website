@@ -191,6 +191,8 @@ body {
   cursor: pointer;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  margin-left: 150px;
+
 }
 
 .mobile-menu-btn:focus,

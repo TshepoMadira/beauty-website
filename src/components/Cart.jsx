@@ -39,7 +39,7 @@ const Cart = ({ cartItems, removeFromCart }) => {
                 ))}
               </div>
               <div className="cart-total">
-                <h3>Total: ${total.toFixed(2)}</h3>
+                <h3>Total: R{total.toFixed(2)}</h3>
                 <button 
                   onClick={handleProceedToCheckout}
                   className="checkout-button"
