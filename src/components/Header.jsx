@@ -28,14 +28,11 @@ const Header = ({ cartCount }) => {
 
   const closeAllDropdowns = () => {
     setOpenDropdown(null);
-    setMobileMenuOpen(false);
   };
 
   const handleMobileLinkClick = () => {
     closeAllDropdowns();
-    setTimeout(() => {
-      setMobileMenuOpen(false);
-    }, 100);
+    setMobileMenuOpen(false);
   };
 
   const toggleMobileMenu = () => {
@@ -45,21 +42,37 @@ const Header = ({ cartCount }) => {
     }
   };
 
+  // Close menu when clicking on overlay
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileMenuOpen && e.target.classList.contains('overlay')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="company-banner">
         <Link to="/" className="company-title-link">
           <h1 className="company-title">BNG Beauty Co.</h1>
-          
         </Link>
         <button
           className={`mobile-menu-btn ${mobileMenuOpen ? 'open' : ''}`}
           onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {mobileMenuOpen ? <FaTimes className="icon" /> : <FaBars className="icon" />}
         </button>
       </div>
+
+      {/* Overlay that appears when mobile menu is open */}
+      {mobileMenuOpen && <div className="overlay"></div>}
 
       <nav className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <ul className="nav-list">

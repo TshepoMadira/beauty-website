@@ -45,7 +45,7 @@ const AllProducts = ({ addToCart }) => {
             <div key={product.id} className="product-card">
               <img src={product.image} alt={product.name} className="product-image" />
               <h2 className="product-name">{product.name}</h2>
-              <p className="product-price">${product.price}</p>
+              <p className="product-price">R{product.price}</p>
               <div className="product-buttons">
                 <button
                   className="view-details-button"
