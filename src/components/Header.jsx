@@ -8,20 +8,20 @@ const Header = ({ cartCount }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    };
+useEffect(() => {
+  const handleScroll = () => {
+    if (mobileMenuOpen) return; // Don't do anything if menu is open
+    const isScrolled = window.scrollY > 10;
+    if (isScrolled !== scrolled) {
+      setScrolled(isScrolled);
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
-
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+  };
+}, [scrolled, mobileMenuOpen]); // Add mobileMenuOpen to dependencies
   const toggleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
