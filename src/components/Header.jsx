@@ -22,6 +22,7 @@ useEffect(() => {
     window.removeEventListener('scroll', handleScroll);
   };
 }, [scrolled, mobileMenuOpen]); // Add mobileMenuOpen to dependencies
+
   const toggleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };

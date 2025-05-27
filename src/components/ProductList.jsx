@@ -23,6 +23,7 @@ const ProductList = ({ addToCart }) => {
 
   return (
     <div className="product-list-container">
+      
       <div className="header-container">
         <h1>Beauty That Empowers</h1>
         <p className="intro-text">
