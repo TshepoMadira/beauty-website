@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Auth.css';
 
 export default function Auth() {
@@ -57,25 +59,24 @@ export default function Auth() {
 
   const login = async (email, password) => {
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      const user = users.find(u => u.email === email && u.password === password);
-      
-      if (!user) {
-        throw new Error('Invalid email or password');
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
       }
+
+      // Store the token in localStorage
+      localStorage.setItem('authToken', data.token);
       
-      // Store minimal user data in localStorage
-      localStorage.setItem('authToken', JSON.stringify({
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        expires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours from now
-      }));
-      
-      return user;
+      return data.user;
     } catch (err) {
       throw err;
     }
@@ -91,36 +92,30 @@ export default function Auth() {
         throw new Error('Password must be at least 6 characters');
       }
 
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      
-      const userExists = users.some(u => u.email === email);
-      if (userExists) {
-        throw new Error('Email already in use');
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          phone: userData.phone
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
       }
+
+      // Store the token in localStorage
+      localStorage.setItem('authToken', data.token);
       
-      const newUser = {
-        id: Date.now().toString(),
-        email,
-        password, // Note: In a real app, never store plain text passwords
-        ...userData,
-        createdAt: new Date().toISOString()
-      };
-      
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-      
-      // Also log the user in immediately
-      localStorage.setItem('authToken', JSON.stringify({
-        id: newUser.id,
-        email: newUser.email,
-        firstName: newUser.firstName,
-        expires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours from now
-      }));
-      
-      return newUser;
+      return data.user;
     } catch (err) {
       throw err;
     }
@@ -134,7 +129,19 @@ export default function Auth() {
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
-        navigate('/checkout', { replace: true }); // Redirect to intended page or home
+        toast.success('Login successful!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        // Wait for 1.5 seconds before navigating to ensure toast is seen
+        setTimeout(() => {
+          navigate('/checkout', { replace: true });
+        }, 1500);
       } else {
         await signup(
           formData.email, 
@@ -145,6 +152,17 @@ export default function Auth() {
             phone: formData.phone
           }
         );
+        // Show success toast
+        toast.success('Registration successful! Please login.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        
         // After successful registration, switch to login view
         setIsLogin(true);
         // Clear password field but keep email
@@ -155,11 +173,17 @@ export default function Auth() {
           lastName: '',
           phone: ''
         }));
-        // Show success message
-        setError('Registration successful! Please login.');
       }
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -167,8 +191,8 @@ export default function Auth() {
 
   return (
     <div className="auth-container">
+      <ToastContainer />
       <h2 className="auth-title">{isLogin ? 'Login' : 'Register'}</h2>
-      {error && <div className="auth-error">{error}</div>}
       <form onSubmit={handleSubmit} className="auth-form">
         {!isLogin && (
           <>

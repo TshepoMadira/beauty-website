@@ -34,8 +34,8 @@ const App = () => {
       const existingItem = prevItems.find(item => item.id === product.id);
       if (existingItem) {
         return prevItems.map(item =>
-          item.id === product.id 
-            ? { ...item, quantity: item.quantity + 1 } 
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
@@ -54,14 +54,14 @@ const App = () => {
       <Header cartCount={cartCount} />
       <main>
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <>
                 <ProductList addToCart={addToCart} />
-               
+
               </>
-            } 
+            }
           />
           <Route path="/weaves" element={<Weaves addToCart={addToCart} />} />
           <Route path="/nails" element={<Nails addToCart={addToCart} />} />
@@ -71,28 +71,28 @@ const App = () => {
           <Route path="/products/:productId" element={<ProductDetails addToCart={addToCart} />} />
           <Route path="/products" element={<AllProducts />} />
           // In your App.js, add this route to the Routes component
-<Route path="/booking" element={<BookingOptions />} />
+          <Route path="/booking" element={<BookingOptions />} />
 
           {/* Protected Routes */}
-          <Route 
-            path="/checkout" 
+          <Route
+            path="/checkout"
             element={
               <ProtectedRoute>
                 <CheckoutForm cartItems={cartItems} />
               </ProtectedRoute>
-            } 
+            }
           />
-          
-          <Route 
-            path="/cart" 
+
+          <Route
+            path="/cart"
             element={
-              <Cart 
-                cartItems={cartItems} 
-                removeFromCart={removeFromCart} 
+              <Cart
+                cartItems={cartItems}
+                removeFromCart={removeFromCart}
               />
-            } 
+            }
           />
-          
+
           <Route path="/weaves/brazilian" element={<Brazilian addToCart={addToCart} />} />
           <Route path="/weaves/peruvian" element={<Peruvian addToCart={addToCart} />} />
           <Route path="/weaves/indian" element={<Indian addToCart={addToCart} />} />
