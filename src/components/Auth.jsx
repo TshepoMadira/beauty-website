@@ -13,12 +13,11 @@ export default function Auth() {
     phone: ''
   });
   const [isLogin, setIsLogin] = useState(true);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({}); // Changed to object to track field-specific errors
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get the intended redirect path or default to '/'
   const from = location.state?.from?.pathname || '/';
 
   const handleChange = (e) => {
@@ -27,15 +26,17 @@ export default function Auth() {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
-  // Check if form is valid based on current mode (login/register)
   const isFormValid = () => {
     if (isLogin) {
-      // For login, just check email and password
       return formData.email.trim() && formData.password.trim();
     } else {
-      // For register, check all required fields
       return (
         formData.email.trim() && 
         formData.password.trim() && 
@@ -44,17 +45,6 @@ export default function Auth() {
         formData.phone.trim()
       );
     }
-  };
-
-  // Basic password validation
-  const validatePassword = (password) => {
-    return password.length >= 6;
-  };
-
-  // Email validation
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
   };
 
   const login = async (email, password) => {
@@ -67,31 +57,44 @@ export default function Auth() {
         body: JSON.stringify({ email, password }),
       });
 
+      // First check if the response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(text || 'Server returned an invalid response');
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
+        // Handle field-specific errors from backend
+        if (data.errors) {
+          const backendErrors = {};
+          data.errors.forEach(err => {
+            backendErrors[err.path] = err.msg;
+          });
+          setErrors(backendErrors);
+          throw new Error('Please fix the validation errors');
+        }
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store the token in localStorage
       localStorage.setItem('authToken', data.token);
-      
       return data.user;
     } catch (err) {
-      throw err;
+      // Handle common error cases
+      let errorMessage = err.message;
+      if (errorMessage.includes('DOCTYPE')) {
+        errorMessage = 'Server error occurred. Please try again later.';
+      } else if (err instanceof SyntaxError) {
+        errorMessage = 'Invalid server response. Please try again.';
+      }
+      throw new Error(errorMessage);
     }
   };
 
   const signup = async (email, password, userData) => {
     try {
-      if (!validateEmail(email)) {
-        throw new Error('Please enter a valid email address');
-      }
-      
-      if (!validatePassword(password)) {
-        throw new Error('Password must be at least 6 characters');
-      }
-
       const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
@@ -106,24 +109,46 @@ export default function Auth() {
         }),
       });
 
+      // First check if the response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(text || 'Server returned an invalid response');
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
+        // Handle field-specific errors from backend
+        if (data.errors) {
+          const backendErrors = {};
+          data.errors.forEach(err => {
+            backendErrors[err.path] = err.msg;
+          });
+          setErrors(backendErrors);
+          throw new Error('Please fix the validation errors');
+        }
         throw new Error(data.message || 'Registration failed');
       }
 
-      // Store the token in localStorage
       localStorage.setItem('authToken', data.token);
-      
       return data.user;
     } catch (err) {
-      throw err;
+      // Handle common error cases
+      let errorMessage = err.message;
+      if (errorMessage.includes('DOCTYPE')) {
+        errorMessage = 'Server error occurred. Please try again later.';
+      } else if (err instanceof SyntaxError) {
+        errorMessage = 'Invalid server response. Please try again.';
+      }
+      throw new Error(errorMessage);
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setErrors({});
     setIsLoading(true);
     
     try {
@@ -138,7 +163,6 @@ export default function Auth() {
           draggable: true,
           progress: undefined,
         });
-        // Wait for 1.5 seconds before navigating to ensure toast is seen
         setTimeout(() => {
           navigate('/checkout', { replace: true });
         }, 1500);
@@ -152,7 +176,6 @@ export default function Auth() {
             phone: formData.phone
           }
         );
-        // Show success toast
         toast.success('Registration successful! Please login.', {
           position: "top-right",
           autoClose: 5000,
@@ -163,9 +186,7 @@ export default function Auth() {
           progress: undefined,
         });
         
-        // After successful registration, switch to login view
         setIsLogin(true);
-        // Clear password field but keep email
         setFormData(prev => ({
           ...prev,
           password: '',
@@ -175,18 +196,28 @@ export default function Auth() {
         }));
       }
     } catch (err) {
-      toast.error(err.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // Don't show toast if we have field-specific errors (they'll be shown inline)
+      if (!Object.keys(errors).length) {
+        toast.error(err.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Helper function to render error message for a field
+  const renderError = (fieldName) => {
+    return errors[fieldName] ? (
+      <div className="error-message">{errors[fieldName]}</div>
+    ) : null;
   };
 
   return (
@@ -203,9 +234,11 @@ export default function Auth() {
               value={formData.firstName}
               onChange={handleChange}
               required
-              className="auth-input"
+              className={`auth-input ${errors.firstName ? 'error' : ''}`}
               style={{ color: '#333' }}
             />
+            {renderError('firstName')}
+            
             <input
               type="text"
               name="lastName"
@@ -213,9 +246,11 @@ export default function Auth() {
               value={formData.lastName}
               onChange={handleChange}
               required
-              className="auth-input"
+              className={`auth-input ${errors.lastName ? 'error' : ''}`}
               style={{ color: '#333' }}
             />
+            {renderError('lastName')}
+            
             <input
               type="tel"
               name="phone"
@@ -223,9 +258,10 @@ export default function Auth() {
               value={formData.phone}
               onChange={handleChange}
               required
-              className="auth-input"
+              className={`auth-input ${errors.phone ? 'error' : ''}`}
               style={{ color: '#333' }}
             />
+            {renderError('phone')}
           </>
         )}
         <input
@@ -235,9 +271,11 @@ export default function Auth() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="auth-input"
+          className={`auth-input ${errors.email ? 'error' : ''}`}
           style={{ color: '#333' }}
         />
+        {renderError('email')}
+        
         <input
           type="password"
           name="password"
@@ -246,9 +284,11 @@ export default function Auth() {
           onChange={handleChange}
           required
           minLength={6}
-          className="auth-input"
+          className={`auth-input ${errors.password ? 'error' : ''}`}
           style={{ color: '#333' }}
         />
+        {renderError('password')}
+        
         <button 
           type="submit" 
           className="auth-submit-btn"
@@ -261,14 +301,14 @@ export default function Auth() {
         {isLogin ? (
           <span onClick={() => {
             setIsLogin(false);
-            setError('');
+            setErrors({});
           }} className="auth-toggle-link">
             Need an account? Register
           </span>
         ) : (
           <span onClick={() => {
             setIsLogin(true);
-            setError('');
+            setErrors({});
           }} className="auth-toggle-link">
             Already have an account? Login
           </span>

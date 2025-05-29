@@ -75,3 +75,15 @@ Auth.css
 .auth-toggle-link:hover {
   text-decoration: underline;
 }
+
+
+.error-message {
+  color: #ff3333;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-input.error {
+  border-color: #ff3333;
+}
