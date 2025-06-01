@@ -277,8 +277,11 @@ body {
     display: flex;
   }
 
-  .main-nav.open {
+  /* .main-nav.open {
     transform: translateX(-100%);
+  } */
+  .main-nav.open {
+    right: 0; /* Slide from right */
   }
 
   .mobile-menu-btn.close-inside {

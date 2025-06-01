@@ -8,59 +8,59 @@ const Header = ({ cartCount }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
 
-useEffect(() => {
-  const handleScroll = () => {
-    if (mobileMenuOpen) return; // Don't do anything if menu is open
-    const isScrolled = window.scrollY > 10;
-    if (isScrolled !== scrolled) {
+  // Handle scroll behavior (don't update if mobile menu is open)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (mobileMenuOpen) return; // Prevent scroll from affecting header style if menu is open
+      const isScrolled = window.scrollY > 10;
       setScrolled(isScrolled);
-    }
-  };
+    };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  return () => {
-    window.removeEventListener('scroll', handleScroll);
-  };
-}, [scrolled, mobileMenuOpen]); // Add mobileMenuOpen to dependencies
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [mobileMenuOpen]);
 
+  // Toggle a dropdown (only on click)
   const toggleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
+  // Close all dropdowns
   const closeAllDropdowns = () => {
     setOpenDropdown(null);
   };
 
+  // When clicking a link in mobile mode, close menu and dropdowns
   const handleMobileLinkClick = () => {
-    closeAllDropdowns();
     setMobileMenuOpen(false);
+    closeAllDropdowns();
   };
 
+  // Toggle mobile menu open/close
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-    if (mobileMenuOpen) {
-      setOpenDropdown(null);
+    if (!mobileMenuOpen) {
+      closeAllDropdowns(); // Clear any open dropdowns when opening mobile menu
     }
   };
 
-  // Close menu when clicking on overlay
+  // Click outside handler (for overlay click to close mobile menu)
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (mobileMenuOpen && e.target.classList.contains('overlay')) {
         setMobileMenuOpen(false);
+        closeAllDropdowns();
       }
     };
 
     document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [mobileMenuOpen]);
 
   return (
     <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="company-banner">
-        <Link to="/" className="company-title-link">
+        <Link to="/" className="company-title-link" onClick={handleMobileLinkClick}>
           <h1 className="company-title">BNG Beauty Co.</h1>
         </Link>
         <button
@@ -81,6 +81,7 @@ useEffect(() => {
             <Link to="/" onClick={handleMobileLinkClick}>Home</Link>
           </li>
 
+          {/* Weaves Dropdown */}
           <li className="nav-item dropdown">
             <div
               className="dropdown-toggle"
@@ -97,6 +98,7 @@ useEffect(() => {
             </div>
           </li>
 
+          {/* Nails Dropdown */}
           <li className="nav-item dropdown">
             <div
               className="dropdown-toggle"
@@ -113,6 +115,7 @@ useEffect(() => {
             </div>
           </li>
 
+          {/* Other Links */}
           <li className="nav-item">
             <Link to="/hair-products" onClick={handleMobileLinkClick}>Hair Products</Link>
           </li>
@@ -123,6 +126,7 @@ useEffect(() => {
             <Link to="/contact" onClick={handleMobileLinkClick}>Contact</Link>
           </li>
 
+          {/* Account & Cart Icons */}
           <li className="nav-item icon-group">
             <Link to="/auth" className="icon-link" title="Account" onClick={handleMobileLinkClick}>
               <FaUser className="icon" />
