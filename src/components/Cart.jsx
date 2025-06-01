@@ -32,7 +32,7 @@ const Cart = ({ cartItems, removeFromCart }) => {
                     <div className="cart-item-details">
                       <h3>{item.name}</h3>
                       <p className="cart-item-description">{item.description}</p>
-                      <p>${item.price} x {item.quantity}</p>
+                      <p>R{item.price} x {item.quantity}</p>
                       <button onClick={() => removeFromCart(item.id)}>Remove</button>
                     </div>
                   </div>
