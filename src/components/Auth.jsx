@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { auth, db } from '../../firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider
+} from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import './Auth.css';
 
 export default function Auth() {
@@ -13,10 +22,11 @@ export default function Auth() {
     phone: ''
   });
   const [isLogin, setIsLogin] = useState(true);
-  const [errors, setErrors] = useState({}); // Changed to object to track field-specific errors
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const googleProvider = new GoogleAuthProvider();
 
   const from = location.state?.from?.pathname || '/';
 
@@ -26,8 +36,7 @@ export default function Auth() {
       ...prev,
       [name]: value
     }));
-    
-    // Clear error when user starts typing
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -38,10 +47,10 @@ export default function Auth() {
       return formData.email.trim() && formData.password.trim();
     } else {
       return (
-        formData.email.trim() && 
-        formData.password.trim() && 
-        formData.firstName.trim() && 
-        formData.lastName.trim() && 
+        formData.email.trim() &&
+        formData.password.trim() &&
+        formData.firstName.trim() &&
+        formData.lastName.trim() &&
         formData.phone.trim()
       );
     }
@@ -49,45 +58,25 @@ export default function Auth() {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      // First check if the response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        throw new Error(text || 'Server returned an invalid response');
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Handle field-specific errors from backend
-        if (data.errors) {
-          const backendErrors = {};
-          data.errors.forEach(err => {
-            backendErrors[err.path] = err.msg;
-          });
-          setErrors(backendErrors);
-          throw new Error('Please fix the validation errors');
-        }
-        throw new Error(data.message || 'Login failed');
-      }
-
-      localStorage.setItem('authToken', data.token);
-      return data.user;
-    } catch (err) {
-      // Handle common error cases
-      let errorMessage = err.message;
-      if (errorMessage.includes('DOCTYPE')) {
-        errorMessage = 'Server error occurred. Please try again later.';
-      } else if (err instanceof SyntaxError) {
-        errorMessage = 'Invalid server response. Please try again.';
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      let errorMessage;
+      switch (error.code) {
+        case 'auth/invalid-email':
+          errorMessage = 'Invalid email address';
+          break;
+        case 'auth/user-disabled':
+          errorMessage = 'This account has been disabled';
+          break;
+        case 'auth/user-not-found':
+          errorMessage = 'No account found with this email';
+          break;
+        case 'auth/wrong-password':
+          errorMessage = 'Incorrect password';
+          break;
+        default:
+          errorMessage = 'Login failed. Please try again.';
       }
       throw new Error(errorMessage);
     }
@@ -95,62 +84,99 @@ export default function Auth() {
 
   const signup = async (email, password, userData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          phone: userData.phone
-        }),
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await updateProfile(user, {
+        displayName: `${userData.firstName} ${userData.lastName}`
       });
 
-      // First check if the response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        throw new Error(text || 'Server returned an invalid response');
-      }
+      await setDoc(doc(db, 'users', user.uid), {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phone: userData.phone,
+        email: email,
+        createdAt: new Date(),
+      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Handle field-specific errors from backend
-        if (data.errors) {
-          const backendErrors = {};
-          data.errors.forEach(err => {
-            backendErrors[err.path] = err.msg;
-          });
-          setErrors(backendErrors);
-          throw new Error('Please fix the validation errors');
-        }
-        throw new Error(data.message || 'Registration failed');
-      }
-
-      localStorage.setItem('authToken', data.token);
-      return data.user;
-    } catch (err) {
-      // Handle common error cases
-      let errorMessage = err.message;
-      if (errorMessage.includes('DOCTYPE')) {
-        errorMessage = 'Server error occurred. Please try again later.';
-      } else if (err instanceof SyntaxError) {
-        errorMessage = 'Invalid server response. Please try again.';
+      return user;
+    } catch (error) {
+      let errorMessage;
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          errorMessage = 'This email is already in use';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Invalid email address';
+          break;
+        case 'auth/weak-password':
+          errorMessage = 'Password should be at least 6 characters';
+          break;
+        default:
+          errorMessage = 'Registration failed. Please try again.';
       }
       throw new Error(errorMessage);
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const isNewUser = result._tokenResponse.isNewUser;
+
+      if (isNewUser) {
+        await setDoc(doc(db, 'users', user.uid), {
+          firstName: user.displayName?.split(' ')[0] || '',
+          lastName: user.displayName?.split(' ')[1] || '',
+          email: user.email,
+          createdAt: new Date(),
+        });
+      }
+
+      toast.success(`Signed in with Google successfully!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      navigate('/checkout', { replace: true });
+    } catch (error) {
+      let errorMessage;
+      switch (error.code) {
+        case 'auth/account-exists-with-different-credential':
+          errorMessage = 'An account already exists with the same email but different sign-in method';
+          break;
+        case 'auth/popup-closed-by-user':
+          return;
+        default:
+          errorMessage = 'Google sign-in failed. Please try again.';
+      }
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
     setIsLoading(true);
-    
+
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
@@ -168,8 +194,8 @@ export default function Auth() {
         }, 1500);
       } else {
         await signup(
-          formData.email, 
-          formData.password, 
+          formData.email,
+          formData.password,
           {
             firstName: formData.firstName,
             lastName: formData.lastName,
@@ -185,7 +211,7 @@ export default function Auth() {
           draggable: true,
           progress: undefined,
         });
-        
+
         setIsLogin(true);
         setFormData(prev => ({
           ...prev,
@@ -196,24 +222,20 @@ export default function Auth() {
         }));
       }
     } catch (err) {
-      // Don't show toast if we have field-specific errors (they'll be shown inline)
-      if (!Object.keys(errors).length) {
-        toast.error(err.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Helper function to render error message for a field
   const renderError = (fieldName) => {
     return errors[fieldName] ? (
       <div className="error-message">{errors[fieldName]}</div>
@@ -238,7 +260,7 @@ export default function Auth() {
               style={{ color: '#333' }}
             />
             {renderError('firstName')}
-            
+
             <input
               type="text"
               name="lastName"
@@ -250,7 +272,7 @@ export default function Auth() {
               style={{ color: '#333' }}
             />
             {renderError('lastName')}
-            
+
             <input
               type="tel"
               name="phone"
@@ -275,7 +297,7 @@ export default function Auth() {
           style={{ color: '#333' }}
         />
         {renderError('email')}
-        
+
         <input
           type="password"
           name="password"
@@ -288,13 +310,43 @@ export default function Auth() {
           style={{ color: '#333' }}
         />
         {renderError('password')}
-        
-        <button 
-          type="submit" 
+
+        <button
+          type="submit"
           className="auth-submit-btn"
           disabled={isLoading || !isFormValid()}
         >
           {isLoading ? 'Processing...' : isLogin ? 'Login' : 'Register'}
+        </button>
+
+        <div className="auth-divider">
+          <span className="auth-divider-text">or</span>
+        </div>
+        <button
+          type="button"
+          onClick={signInWithGoogle}
+          className="gsi-material-button"
+          disabled={isLoading}
+        >
+          <div className="gsi-material-button-state"></div>
+          <div className="gsi-material-button-content-wrapper">
+            <div className="gsi-material-button-icon">
+              <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                style={{ display: 'block' }}
+              >
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                <path fill="none" d="M0 0h48v48H0z"></path>
+              </svg>
+            </div>
+            <span>Continue with Google</span>
+          </div>
         </button>
       </form>
       <div className="auth-toggle-container">
