@@ -7,6 +7,7 @@ const Header = ({ cartCount }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [showComingSoonModal, setShowComingSoonModal] = useState(false);
 
   // Handle scroll behavior (don't update if mobile menu is open)
   useEffect(() => {
@@ -108,10 +109,18 @@ const Header = ({ cartCount }) => {
               <FaChevronDown className="dropdown-icon" />
             </div>
             <div className={`dropdown-menu ${openDropdown === 'nails' ? 'open' : ''}`}>
-              <Link to="/nails/gel-overlay" onClick={handleMobileLinkClick}>Gel Overlay</Link>
-              <Link to="/nails/acrylic" onClick={handleMobileLinkClick}>Acrylic</Link>
-              <Link to="/nails/buff-shine" onClick={handleMobileLinkClick}>Buff & Shine</Link>
-              <Link to="/nails/polygel" onClick={handleMobileLinkClick}>Polygel</Link>
+              <div className="dropdown-item" onClick={() => setShowComingSoonModal(true)}>
+                Gel Overlay <span className="coming-soon-badge">Coming Soon</span>
+              </div>
+              <div className="dropdown-item" onClick={() => setShowComingSoonModal(true)}>
+                Acrylic <span className="coming-soon-badge">Coming Soon</span>
+              </div>
+              <div className="dropdown-item" onClick={() => setShowComingSoonModal(true)}>
+                Buff & Shine <span className="coming-soon-badge">Coming Soon</span>
+              </div>
+              <div className="dropdown-item" onClick={() => setShowComingSoonModal(true)}>
+                Polygel <span className="coming-soon-badge">Coming Soon</span>
+              </div>
             </div>
           </li>
 
@@ -140,6 +149,23 @@ const Header = ({ cartCount }) => {
           </li>
         </ul>
       </nav>
+
+      {/* Coming Soon Modal */}
+      {showComingSoonModal && (
+        <div className="coming-soon-modal">
+          <div className="modal-content">
+            <h3>Exciting Things Are Coming!</h3>
+            <p>Our nail services are currently in development. We're working hard to bring you the highest quality options and appreciate your patience.</p>
+            <p>Stay tuned for updates on our new nail services launching soon!</p>
+            <button 
+              onClick={() => setShowComingSoonModal(false)}
+              className="modal-close-btn"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
