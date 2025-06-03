@@ -31,34 +31,7 @@ const ProductList = ({ addToCart }) => {
         </p>
       </div>
 
-      <div className="our-categories">
-        <h2>Our Categories</h2>
-        <div className="category-boxes">
-          <div className="category-box">
-            <h3>Weaves</h3>
-            <p>Premium quality weaves in various styles and textures</p>
-            <button onClick={() => exploreCategory('hair')}>Explore</button>
-          </div>
-
-          <div className="category-box">
-            <h3>Services</h3>
-            <p>Professional weave installation, nail care, and makeup services</p>
-            <button onClick={() => exploreCategory('services')}>Explore</button>
-          </div>
-
-          <div className="category-box">
-            <h3>Nails</h3>
-            <p>High-quality nail products and professional nail services</p>
-            <button onClick={() => exploreCategory('nails')}>Explore</button>
-          </div>
-
-          <div className="category-box">
-            <h3>Make Up</h3>
-            <p>Premium makeup products for a flawless look</p>
-            <button onClick={() => exploreCategory('makeup')}>Explore</button>
-          </div>
-        </div>
-      </div>
+    
 
       <div className="products-section">
         <h2 className="section-header">Featured Products</h2>
